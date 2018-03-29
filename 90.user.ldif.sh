@@ -21,5 +21,5 @@ uid: $1
 givenName:: `echo "$2" | base64`
 sn:: `echo "$3" | base64`
 mail:: `echo "$4" | base64`
-userPassword:: `echo "$pw" | base64`
+userPassword:: `slappasswd -h '{CRYPT}' -c '$5$rounds=8000$%.16s' -s "$pw" | base64`
 EOF
