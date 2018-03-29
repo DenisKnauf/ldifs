@@ -1,6 +1,6 @@
 Add your basedn to basedn (eg: `echo o=denkn,c=at > basedn`).
 
-For initialization, first shutdown slapd and delete `/var/lib/ldap/` (you will lost all your data!),
+For initialization, first shutdown slapd and delete `/var/lib/ldap/` (you will loose all of your data!),
 then use `./90.root.ldif | slapadd -b \`cat basedn\` -v`.
 
 Now you can start slapd again.
