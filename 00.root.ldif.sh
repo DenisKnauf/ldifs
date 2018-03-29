@@ -3,13 +3,6 @@
 basedn=$(cat basedn)
 _x=${basedn%%,*}
 dc=${_x#*=}
-en=${_x%%=*}
-if [ Xdc = "X$en" ]
-then
-	en=""
-else
-	en=`printf '\n%s' "$en: $dc"`
-fi
 pw=`pwgen 8 1`
 echo "# Password for cn=root,$basedn: $pw" >&2
 
@@ -18,7 +11,8 @@ dn: $basedn
 objectClass: top
 objectClass: dcObject
 objectClass: organization
-dc: ${dc}${en}
+dc: $dc
+o: $dc
 structuralObjectClass: organization
 
 dn: cn=root,$basedn
