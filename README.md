@@ -10,7 +10,7 @@ Now you can start slapd with your fresh config.
 
 Add these lines to `/etc/ldap/ldap.conf`:
 
-	cat > /etc/ldap/ldap.conf <<EOF
+	cat >> /etc/ldap/ldap.conf <<EOF
 	BASE    `cat basedn`
 	URI     ldapi://
 	EOF
