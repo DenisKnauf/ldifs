@@ -11,7 +11,7 @@ pw=`pwgen 8 1`
 echo "# Password: $pw" >&2
 
 cat <<EOF
-dn: cn=$1,ou=People,o=denkn,c=at
+dn: cn=$1,ou=People,`cat basedn`
 objectClass: top
 objectClass: simpleSecurityObject
 objectClass: organizationalPerson
