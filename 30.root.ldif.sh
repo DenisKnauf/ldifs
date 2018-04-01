@@ -20,7 +20,7 @@ objectClass: simpleSecurityObject
 objectClass: organizationalRole
 cn: root
 description: LDAP administrator
-userPassword:: `slappasswd -h '{CRYPT}' -c '$5$rounds=8000$%.16s' -s "$pw" | base64 -w0`
+userPassword:: `/usr/sbin/slappasswd -h '{CRYPT}' -c '$5$rounds=8000$%.16s' -s "$pw" | base64 -w0`
 structuralObjectClass: organizationalRole
 
 dn: ou=People,$basedn

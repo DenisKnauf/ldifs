@@ -1,12 +1,43 @@
-Add your basedn to basedn (eg: `echo o=denkn,c=at > basedn`).
+Pre
+===
 
-For initialization, first shutdown slapd and delete the content of `/var/lib/ldap/` (you will loose all of your data!),
-then use:
+Install slapd and ldap-utils:
 
-	./00.root.ldif.sh | slapadd -b `cat basedn` -v
-	chown -R openldap:openldap /var/lib/ldap/
+	sudo aptitude install slapd ldap-utils
 
-Now you can start slapd with your fresh config.
+It will ask for eg. domain, password.
+If your domain is `example.net`, your basedn will be `dc=example,dc=net`.
+If you want to use an other basedn, for example `o=example,c=de`,
+debian/ubuntu will not provide any way to do that.
+
+Thats because while these steps your database will be lost and you can choose your basedn.
+
+Add your basedn to file `basedn`:
+
+	echo dc=example,dc=net > basedn
+
+Init
+====
+
+Usefull defaults for security (better Passwordhashes):
+
+	ldapmodify -H ldapi:// -Y EXTERNAL -f 10.acls.ldif
+	ldapmodify -H ldapi:// -Y EXTERNAL -f 20.passwordhash.ldif
+
+BaseDN
+======
+
+These steps will erase your database.
+If you do not want to change your BaseDN, skip this step.
+
+The next step will print your new password on STDERR, so note it.
+You can change it any time.
+
+	./00.suffix.ldif.sh | sudo ldapmodify -H ldapi:// -Y external
+	./30.root.ldif.sh | sudo -u openldap -i slapadd -vb `cat basedn`
+
+Clientconfig
+============
 
 Add these lines to `/etc/ldap/ldap.conf`:
 
@@ -15,19 +46,24 @@ Add these lines to `/etc/ldap/ldap.conf`:
 	URI     ldapi://
 	EOF
 
-Via `ldapadd -Y EXTERNAL` you can add any other ldif.
-
-For adding 10 and 20 use: [BROKEN, do it manually in `/etc/...`]
-
-	ldapmodify -Y EXTERNAL -f 10.acls.ldif
-	ldapmodify -Y EXTERNAL -f 20.passwordhash.ldif
+Add an user
+===========
 
 For adding an user run:
 
-	./90.user.ldif.sh username givenname surname emailaddr | ldapadd -Y EXTERNAL
+	./90.user.ldif.sh "$username" "$givenname" "$surname" "$emailaddr" | ldapadd -H ldapi:// -Y EXTERNAL
 
 It will print the password on STDERR.
 
+The DN will be uid=$username,$basedn
+
+Changing Passwords
+==================
+
 For changing password use:
 
-	ldappasswd -xASD YOURDN
+	ldappasswd -xASD $yourdn
+
+If you forgot your password, the administator can change the password via:
+
+	./99.passwordrecovery.ldif.sh $yourdn| sudo ldapmodify -H ldapi:// -Y external
