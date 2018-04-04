@@ -1,5 +1,5 @@
 Pre
-===
+---
 
 Install slapd and ldap-utils:
 
@@ -17,7 +17,7 @@ Add your basedn to file `basedn`:
 	echo dc=example,dc=net > basedn
 
 Init
-====
+----
 
 Usefull defaults for security (better Passwordhashes):
 
@@ -25,7 +25,7 @@ Usefull defaults for security (better Passwordhashes):
 	ldapmodify -H ldapi:// -Y EXTERNAL -f 20.passwordhash.ldif
 
 BaseDN
-======
+------
 
 These steps will erase your database.
 If you do not want to change your BaseDN, skip this step.
@@ -37,9 +37,10 @@ You can change it any time.
 	./30.root.ldif.sh | sudo -u openldap -i slapadd -vb `cat basedn`
 
 Clientconfig
-============
+------------
 
-Add these lines to `/etc/ldap/ldap.conf`:
+Some lines should be added to `/etc/ldap/ldap.conf`.
+These would set defaults, so you could omit `-H ldapi://` and `-D DN`.
 
 	cat >> /etc/ldap/ldap.conf <<EOF
 	BASE    `cat basedn`
@@ -47,7 +48,7 @@ Add these lines to `/etc/ldap/ldap.conf`:
 	EOF
 
 Add an user
-===========
+-----------
 
 For adding an user run:
 
@@ -58,7 +59,7 @@ It will print the password on STDERR.
 The DN will be uid=$username,$basedn
 
 Changing Passwords
-==================
+------------------
 
 For changing password use:
 
