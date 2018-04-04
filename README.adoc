@@ -40,7 +40,7 @@ Clientconfig
 ------------
 
 Some lines should be added to `/etc/ldap/ldap.conf`.
-These would set defaults, so you could omit `-H ldapi://` and `-D DN`.
+These would set defaults, so you could omit `-H ldapi://` and `-b $DN`.
 
 	cat >> /etc/ldap/ldap.conf <<EOF
 	BASE    `cat basedn`
@@ -52,11 +52,11 @@ Add an user
 
 For adding an user run:
 
-	./90.user.ldif.sh "$username" "$givenname" "$surname" "$emailaddr" | ldapadd -H ldapi:// -Y EXTERNAL
+	./90.user.ldif.sh "$username" "$givenname" "$surname" "$emailaddr" | ldapadd -H ldapi:// -Y external
 
 It will print the password on STDERR.
 
-The DN will be uid=$username,$basedn
+The DN will be `uid=$username,ou=People,$basedn`.
 
 Changing Passwords
 ------------------
