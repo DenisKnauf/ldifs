@@ -18,8 +18,8 @@ objectClass: organizationalPerson
 objectClass: inetOrgPerson
 cn: $1
 uid: $1
-givenName:: `echo "$2" | base64`
-sn:: `echo "$3" | base64`
-mail:: `echo "$4" | base64`
-userPassword:: `slappasswd -h '{CRYPT}' -c '$5$rounds=8000$%.16s' -s "$pw" | base64 -w0`
+givenName: $2
+sn: $3
+mail: $4
+userPassword:: `echo "$pw" | base64 -w0`
 EOF

@@ -63,7 +63,7 @@ Changing Passwords
 
 For changing password use:
 
-	ldappasswd -xASD $yourdn
+	ldappasswd -xSWD $yourdn
 
 If you forgot your password, the administator can change the password via:
 
